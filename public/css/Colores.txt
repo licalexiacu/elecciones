@@ -1,0 +1,5 @@
+info: #36A2EB
+danger: #FF6384
+succes: #4BC0C0
+warning: #FFCE56
+primary: #9085F3
