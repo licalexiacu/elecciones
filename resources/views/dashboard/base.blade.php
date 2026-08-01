@@ -12,7 +12,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
-    <title>Sistema de turnos - SGT</title>
+    <title>Gestion de Datos Electorales</title>
     <link rel="icon" href="assets/favicon/SGT_Icono.ico" type="image/x-icon">
     <link rel="manifest" href="assets/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
@@ -25,6 +25,42 @@
     <!-- Main styles for this application-->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/coreui-chartjs.css') }}" rel="stylesheet">
+
+    <style>
+      /* Override de colores para igualar paleta corporativa SGA */
+      .c-sidebar {
+          background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%) !important;
+          box-shadow: 4px 0 10px rgba(0,0,0,0.15) !important;
+          border: none !important;
+      }
+      .c-sidebar-brand {
+          background-color: rgba(0, 0, 0, 0.15) !important;
+          border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+      }
+      .c-sidebar-nav-link, 
+      .c-sidebar-nav-dropdown-toggle,
+      .c-sidebar-nav-title {
+          color: rgba(255, 255, 255, 0.85) !important;
+      }
+      .c-sidebar-nav-icon {
+          color: #ffffff !important;
+          opacity: 0.9;
+      }
+      .c-sidebar-nav-link:hover, 
+      .c-sidebar-nav-dropdown-toggle:hover {
+          background-color: rgba(255, 255, 255, 0.15) !important;
+          color: #ffffff !important;
+      }
+      .c-sidebar-nav-link.c-active {
+          background-color: rgba(255, 255, 255, 0.25) !important;
+          color: #ffffff !important;
+          border-left: 4px solid #ffffff !important;
+      }
+      .c-sidebar-minimizer {
+          background-color: rgba(0, 0, 0, 0.2) !important;
+          border-top: 1px solid rgba(255,255,255,0.1) !important;
+      }
+    </style>
 
     @yield('css')
 

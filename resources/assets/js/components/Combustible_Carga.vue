@@ -3,7 +3,7 @@
         <!-- Breadcrumb -->
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/"><b>Home</b></a></li>
-            <li class="breadcrumb-item"><b>Autorizacion Combustible</b></li>
+            <li class="breadcrumb-item"><b>Combustible Litros</b></li>
         </ol>
         
         <!-- GRILLA Y BUSCADOR -->
@@ -16,13 +16,13 @@
                                 <div class="form-group row align-items-center mb-4">
                                     <div class="col-md-8 mb-2 mb-md-0">
                                         <div class="input-group">
-                                            <input type="text" v-model="busqueda" @keyup.enter="listarCampos(1, busqueda)" class="form-control" placeholder="Buscar Nombre...">
+                                            <input type="text" v-model="busqueda" @keyup.enter="listarCampos(1, busqueda)" class="form-control" placeholder="Buscar por DNI o Nombre...">
                                             <div class="input-group-append">
                                                 <button type="submit" @click="listarCampos(1, busqueda)" class="btn btn-info">
                                                     <i class="cil-search"></i> Buscar
                                                 </button>
                                                 <button type="button" @click="abrirModal('cargar')" class="btn btn-success ml-2 rounded">
-                                                    <i class="cil-user"></i> Nuevo
+                                                    <i class="cil-user"></i> Nueva Carga
                                                 </button>
                                             </div>
                                         </div>
@@ -33,17 +33,19 @@
                                     <thead style="background-color: #2f528f; color: white;">
                                         <tr>
                                             <th style="text-align: center;">Nombre</th>
-                                            <th style="text-align: center;">Litros</th>
+                                            <th>Litros</th>
+                                            <th>Usuario</th>
                                             <th class="text-center">Opciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="combustible in arrayCampos" :key="combustible.id">
-                                            <td class="align-middle" v-text="combustible.nombre" style="text-align: center;"></td>
-                                            <td class="align-middle" v-text="combustible.litros" style="text-align: center;"></td>
+                                        <tr v-for="combustible_carga in arrayCampos" :key="combustible_carga.id">
+                                            <td class="align-middle" v-text="combustible_carga.nombre" style="text-align: center;"></td>
+                                            <td class="align-middle font-weight-bold text-danger" v-text="combustible_carga.litros"></td>
+                                            <td class="align-middle" v-text="combustible_carga.nombre_user"></td>
                                             <td class="align-middle text-center">
-                                                <button type="button" @click="abrirModal('consultar', combustible)" class="btn btn-success btn-md shadow-sm" title="Visualiza registro">
-                                                    <i class="cil-pencil"></i>
+                                                <button type="button" @click="abrirModal('consultar', combustible_carga)" class="btn btn-success btn-md shadow-sm" title="Visualiza registro">
+                                                    <i class="cil-info"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -51,7 +53,7 @@
                                 </table>
                                 
                                 <nav>
-                                    <ul class="pagination mb-0"> 
+                                    <ul class="pagination mb-0">
                                         <li class="page-item" v-if="pagination.current_page > 1">
                                             <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1, busqueda)">Ant</a>
                                         </li>
@@ -81,7 +83,7 @@
                         </button>
                     </div>
                     
-                    <!-- Se eliminó bg-light para igualar la transparencia del modal de Comida -->
+                    <!-- Se eliminó bg-light -->
                     <div class="modal-body">
 
                         <div v-show="error" class="alert alert-danger shadow-sm">
@@ -91,31 +93,65 @@
                         </div>
 
                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                            <div class="form-group row">
-                                <label class="col-md-2 font-weight-bold text-dark mb-0">Nombre</label>
-                                <div class="col-md-7">
-                                    <input type="text" v-model="nombre" class="form-control">
+                            <div class="form-group row" v-if="tipoAccion==1">
+                                <label class="col-md-2 font-weight-bold text-dark mb-0">Votante</label>
+                                <div class="col-md-8">
+                                    <v-select
+                                        :on-search="selectPadron"
+                                        label="nombre"
+                                        :options="arrayPadron"
+                                        :filterable="false"
+                                        :autoscroll="true"
+                                        placeholder="Buscar Padrón por nombre"
+                                        :onChange="getDatosPadron">
+                                    </v-select>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                    <label class="col-md-2 font-weight-bold text-dark mb-0">Litros (Lts)</label>
-                                    <div class="col-md-3">
-                                        <input type="number" step="0.01" v-model="litros" class="form-control font-weight-bold text-danger text-center" :class="{'shadow-sm border-info': tipoAccion == 1}">
+
+                            <template v-if="id > 0">
+                                <div class="form-group row" v-if="tipoAccion==2">
+                                    <label class="col-md-2 font-weight-bold text-dark mb-0">Nombre</label>
+                                    <div class="col-md-7">
+                                        <input type="text" v-model="nombre" class="form-control" readonly>
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                    <label class="col-md-2 font-weight-bold text-dark mb-0">Litros (Lts)</label>
+                                    <div class="col-md-3">
+                                        <input type="number" step="0.01" v-model="litros" class="form-control font-weight-bold text-danger text-center" :class="{'shadow-sm border-info': tipoAccion == 1}" readonly>
+                                    </div>
+                                </div>
+
+                                <!-- SECCIÓN: AUDITORÍA -->
+                                <template v-if="tipoAccion == 2">
+                                    <!-- Se eliminó bg-white -->
+                                    <fieldset class="border p-3 rounded shadow-sm">
+                                        <legend class="w-auto px-2" style="color: #2c3e50; font-weight: bold; font-size: 1.1rem;">Auditoría de Carga</legend>
+                                        <div class="form-group row">
+                                            <label class="col-md-1 font-weight-bold text-dark mb-0">Usuario</label>
+                                            <div class="col-md-5">
+                                                <input type="text" v-model="usuario" class="form-control text-muted" readonly>
+                                            </div>
+                                            <label class="col-md-2 font-weight-bold text-dark mb-0 text-right">Fecha/Hora</label>
+                                            <div class="col-md-4">
+                                                <input type="text" v-model="created" class="form-control text-muted text-center" readonly>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </template>
+                            </template>
+
                         </form>
                     </div>
                     
-                    <!-- Se eliminó border-top-0 y bg-light para respetar el diseño estructural -->
+                    <!-- Se eliminó border-top-0 y bg-light -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger btn-lg shadow-sm" @click="cerrarModal()">
                             <i class="cil-x"></i> Cerrar
                         </button>
-                        <button type="button" v-if="tipoAccion == 1" class="btn btn-success btn-lg shadow-sm px-5 font-weight-bold" @click="store()" :disabled="nombre == ''">
-                            <i class="cil-check-alt"></i> Guardar
-                        </button>
-                        <button type="button" v-if="tipoAccion == 2" class="btn btn-success btn-lg shadow-sm px-5 font-weight-bold" @click="update()" :disabled="nombre == ''">
-                            <i class="cil-check-alt"></i> Actualizar
+                        <button type="button" v-if="tipoAccion == 1" class="btn btn-success btn-lg shadow-sm px-5 font-weight-bold" @click="cargar()" :disabled="id == 0 || litros <= 0">
+                            <i class="cil-check-alt"></i> Procesar Carga
                         </button>
                     </div>
                 </div>
@@ -126,8 +162,12 @@
 </template>
 
 <script>
+    import vSelect from 'vue-select';
     export default {
         props : ['ruta'],
+        components: {
+            vSelect
+        },
         data (){
             return {
                 // Declara todas la Variables GENERALES
@@ -155,7 +195,11 @@
                 // Campos exclusivas del COMPONENTE
                 id : 0,
                 nombre : '',
-                litros: 0
+                litros : 0,
+                usuario : '',
+                created : '',
+
+                arrayPadron : []
             }
         },
         computed:{
@@ -191,7 +235,8 @@
         methods : {
             listarCampos (page, busqueda){
                 let me = this;
-                var url = this.ruta + '/combustible?page='+page+'&busqueda='+busqueda;
+                var url = this.ruta + '/combustible_carga?page='+page+'&busqueda='+busqueda;
+
                 axios.get(url).then(function (response) {
                     me.arrayCampos = response.data.table.data;
                     me.pagination = response.data.pagination;
@@ -226,6 +271,8 @@
                         this.id = data['id'];
                         this.nombre = data['nombre'];
                         this.litros = data['litros'];
+                        this.usuario = data['nombre_user'];
+                        this.created = data['created_at'];
                         break;
                     }
                 }
@@ -243,8 +290,34 @@
                 this.id = 0;
                 this.nombre = '';
                 this.litros = 0;
+                this.usuario = '';
+                this.created = '';
             },
-            store(){
+            selectPadron(search,loading){
+                let me = this;
+                loading(true)
+
+                var url = this.ruta + '/combustible/select?filtro='+search;
+                axios.get(url).then(function (response) {
+                    let respuesta = response.data;
+                    me.arrayPadron = respuesta.combustible;
+                    loading(false)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    loading(false)
+                });
+            }, 
+            getDatosPadron(val1){
+                this.reiniciaVaribles();
+
+                if (val1 != null) {
+                    this.id = val1.id;
+                    this.nombre = val1.nombre;
+                    this.litros = val1.litros;
+                }
+            },
+            cargar(){
                 swal({
                     title: '¿Desea cargar el registro seleccionado?',
                     type: 'warning',
@@ -262,54 +335,12 @@
                     if (result.value) {
                         let me = this;
 
-                        axios.put(this.ruta + '/combustible/store/',{
-                            'nombre' : this.nombre,
+                        axios.put(this.ruta + '/combustible_carga/store/',{
+                            'id_combustible' : this.id,
                             'litros' : this.litros
                         }).then(function (response){
                             swal(
                                 '¡Cargado!',
-                                'El registro seleccionado fue procesado con ÉXITO.',
-                                'success'
-                            )
-                            me.cerrarModal();
-                            me.listarCampos(1, me.busqueda);
-                        }).catch(function (error) {
-                            swal({
-                                target: document.getElementById("modalCombustile"),
-                                title: "Error",
-                                text: "Debido a un error no pudo cargarse el registro seleccionado.",
-                                type: "error",
-                            });
-                        });
-                    }
-                })
-            },
-            update(){
-                swal({
-                    title: '¿Desea Actualizar el registro seleccionado?',
-                    text: 'Si el Votante ya fue seleccionado en la carga no se aplicara los cambios!!!',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Sí, Aceptar',
-                    cancelButtonText: 'No, cancelar',
-                    confirmButtonClass: 'btn btn-success',
-                    cancelButtonClass: 'btn btn-danger',
-                    buttonsStyling: false,
-                    reverseButtons: true,
-                    target: document.getElementById("modalCombustile"),
-                }).then((result) => {
-                    if (result.value) {
-                        let me = this;
-
-                        axios.put(this.ruta + '/combustible/update/',{
-                            'id' : this.id,
-                            'nombre' : this.nombre,
-                            'litros' : this.litros
-                        }).then(function (response){
-                            swal(
-                                '¡Actualizaro!',
                                 'El registro seleccionado fue procesado con ÉXITO.',
                                 'success'
                             )

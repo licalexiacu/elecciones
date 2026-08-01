@@ -21,9 +21,4 @@ class PadronModel extends Model
     public function padron_comida(){
         return $this->hasMany('app/Models/ComidaModel');
     }
-
-    // Un Padron puede estar en muchos combustibles
-    public function padron_combustible(){
-        return $this->hasMany('app/Models/CombustibleModel');
-    }
 }

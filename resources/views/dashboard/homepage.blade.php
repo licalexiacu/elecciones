@@ -44,6 +44,10 @@
             <combustible :ruta="ruta"></combustible>
         </template>
 
+        <template v-if="menu==11">
+            <combustible_carga :ruta="ruta"></combustible_carga>
+        </template>
+
         <template v-if="menu==99">
             <roles :ruta="ruta"></roles>
         </template>

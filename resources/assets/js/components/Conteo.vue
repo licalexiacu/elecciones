@@ -1,9 +1,9 @@
-<template class="c-main">
-    <main>
+<template>
+    <main class="c-main" style="background-image: url('assets/img/Fondo_Formularios.jpg');">
             <!-- Breadcrumb -->
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item">Mesas</li>
+                <li class="breadcrumb-item"><a href="/"><b>Home</b></a></li>
+                <li class="breadcrumb-item"><b>Conteo</b></li>
             </ol>
             <!-- GRILLA Y BUSCADOR -->
             <div class="container-fluid">
@@ -40,8 +40,8 @@
                                     <td class="align-middle font-weight-bold" v-text="conteo.numero_mesa"></td>
                                     <td v-text="conteo.descripcion"></td>
                                     <td v-text="conteo.usuario"></td>
-                                    <td v-text="conteo.conteo"></td>
-                                    <td v-text="conteo.conteo_seguro"></td>
+                                    <td class="align-middle font-weight-bold text-danger" v-text="conteo.conteo"></td>
+                                    <td class="align-middle font-weight-bold text-danger" v-text="conteo.conteo_seguro"></td>
                                     <td>
                                         <button type="button" @click="abrirModal('update', conteo)" class="btn btn-success btn-md">
                                           <i class="cil-pencil"></i>

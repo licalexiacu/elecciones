@@ -1,9 +1,9 @@
-<template class="c-main">
-    <main>
+<template>
+    <main class="c-main" style="background-image: url('assets/img/Fondo_Formularios.jpg');">
             <!-- Breadcrumb -->
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item">Usuarios</li>
+                <li class="breadcrumb-item"><a href="/"><b>Home</b></a></li>
+                <li class="breadcrumb-item"><b>Usuarios</b></li>
             </ol>
             <!-- GRILLA Y BUSCADOR -->
             <div class="container-fluid">

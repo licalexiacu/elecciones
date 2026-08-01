@@ -76,8 +76,14 @@ Route::group(['middleware'=>['auth']],function(){
 
 	// Combustible
 	Route::get('combustible','CombustibleController@index');
-	Route::put('/combustible/combustible','CombustibleController@combustible');
-	Route::get('/combustible/listado','CombustibleController@combustible_listado')->name('combustible_listado_pdf');
+	Route::put('/combustible/store','CombustibleController@store');
+	Route::put('/combustible/update','CombustibleController@update');
+	Route::get('/combustible/select','CombustibleController@select');
+
+	// Combustible Carga
+	Route::get('combustible_carga','Combustible_CargaController@index');
+	Route::put('/combustible_carga/store','Combustible_CargaController@store');
+	Route::get('/combustible_carga/listado','Combustible_CargaController@combustible_listado')->name('combustible_listado_pdf');
 });
 
 //Route::get('/home', 'HomeController@index')->name('home');

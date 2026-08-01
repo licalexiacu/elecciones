@@ -1,9 +1,9 @@
-<template class="c-main">
-    <main>
+<template>
+    <main class="c-main" style="background-image: url('assets/img/Fondo_Formularios.jpg');">
             <!-- Breadcrumb -->
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a v-bind:href="ruta+'/'">Home</a></li>
-                <li class="breadcrumb-item">Cambio de Clave</li>
+                <li class="breadcrumb-item"><a v-bind:href="ruta+'/'"><b>Home</b></a></li>
+                <li class="breadcrumb-item"><b>Cambio de Clave</b></li>
             </ol>
             <div class="container-fluid">
                 <div class="card">

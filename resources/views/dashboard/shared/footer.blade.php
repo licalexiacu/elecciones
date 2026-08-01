@@ -1,4 +1,6 @@
 <footer class="c-footer">
-  <div><a href="https://www.pronetsi.com.ar">Pronet SI</a> &copy; 2021 creativeLabs.</div>
-  <div class="ml-auto">Powered by&nbsp;<a href="https://www.pronetsi.com.ar">Pronet SI</a></div>
+    <div>
+        <a href="https://www.pronetsiweb.com.ar" target="_blank">Pronet SI</a>
+        <span>&copy; 2026 &mdash; Todos los derechos reservados.</span>
+    </div>
 </footer>

@@ -16,7 +16,7 @@
     <meta name="description" content="SGT - Sistema de Gestion de turnos">
     <meta name="author" content="ProNet SI">
     <meta name="keyword" content="SGT. Sistema de Gestion de turnos">
-    <title>Sistema de turnos - SGT</title>
+    <title>Gestion de Datos Electorales</title>
     <link rel="icon" href="assets/favicon/SGT_Icono.ico" type="image/x-icon">
     <link rel="manifest" href="assets/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">

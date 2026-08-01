@@ -27,6 +27,7 @@ Vue.component('conteo', require('./components/Conteo.vue'));
 Vue.component('graficos', require('./components/Graficos.vue'));
 Vue.component('conteo_fiscal', require('./components/Conteo_Fiscal.vue'));
 Vue.component('combustible', require('./components/Combustible.vue'));
+Vue.component('combustible_carga', require('./components/Combustible_Carga.vue'));
 
 const app = new Vue({
     el: '#app',
