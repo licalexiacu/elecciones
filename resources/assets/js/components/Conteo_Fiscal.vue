@@ -114,10 +114,10 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" v-if="tipoAccion==2" class="btn btn-success" @click="updateCampos()">
+                            <button type="button" v-if="tipoAccion==2" class="btn btn-success btn-lg shadow-sm px-5 font-weight-bold" @click="updateCampos()">
                                 <i class="cil-sync"></i>&nbsp;Actualizar
                             </button>
-                            <button type="button" class="btn btn-danger" @click="cerrarModal()">
+                            <button type="button" class="btn btn-danger btn-lg shadow-sm px-5 font-weight-bold" @click="cerrarModal()">
                                 <i class="cil-x"></i>&nbsp;Cerrar
                             </button>
                         </div>

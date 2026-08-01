@@ -147,11 +147,11 @@
                     
                     <!-- Se eliminó border-top-0 y bg-light -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-lg shadow-sm" @click="cerrarModal()">
-                            <i class="cil-x"></i> Cerrar
-                        </button>
                         <button type="button" v-if="tipoAccion == 1" class="btn btn-success btn-lg shadow-sm px-5 font-weight-bold" @click="cargar()" :disabled="id == 0 || litros <= 0">
                             <i class="cil-check-alt"></i> Procesar Carga
+                        </button>
+                        <button type="button" class="btn btn-danger btn-lg shadow-sm px-5 font-weight-bold" @click="cerrarModal()">
+                            <i class="cil-x"></i> Cerrar
                         </button>
                     </div>
                 </div>

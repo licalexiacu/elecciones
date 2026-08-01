@@ -73,15 +73,22 @@ class Combustible_CargaController extends Controller
 
     public function combustible_listado(Request $request)
     {
-        $combustible = CombustibleModel::join('padron','combustible.id_padron','=','padron.id')
-            ->selectraw('padron.*, combustible.created_at')
-            ->orderBy('padron.nombre', 'asc')
+        // LEFT JOIN para traer todo el padrón autorizado, hayan cargado o no.
+        $combustible = Combustible_CargaModel::join('combustible', 'combustible_carga.id_combustible', '=', 'combustible.id')
+            ->selectRaw('combustible.nombre, combustible.litros as autorizado, combustible_carga.litros as cargado, combustible_carga.created_at as fecha_carga')
+            ->orderBy('combustible.nombre', 'asc')
             ->get();
 
-        $contador = CombustibleModel::count();
-            
-        $pdf = \PDF::loadView('pdf.combustible_listado', ['combustible'=>$combustible, 'contador'=>$contador]);
-        //return $pdf->download($numVenta[0]->num_comprobante .'.pdf');
+        // Cálculos para el pie de página
+        $total_autorizado = $combustible->sum('autorizado');
+        $total_cargado = $combustible->sum('cargado');
+
+        $pdf = \PDF::loadView('pdf.combustible_listado', [
+            'combustible' => $combustible, 
+            'total_autorizado' => $total_autorizado,
+            'total_cargado' => $total_cargado
+        ]);
+        
         return $pdf->stream();
     }
 }

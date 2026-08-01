@@ -3,83 +3,192 @@
         <!-- Breadcrumb -->
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/"><b>Home</b></a></li>
-            <li class="breadcrumb-item"><b>Graficos</b></li>
+            <li class="breadcrumb-item"><b>Gráficos</b></li>
         </ol>
         <div class="container-fluid">
-            <div class="card">
-                <div class="car-body">
+            <div class="card" style="box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                <div class="card-body">
                     <br>
-                    <h1 style="text-align:center"><p><strong>Total de Votantes {{ padron }}</strong></p></h1>
-                    <br>
+                    <h1 style="text-align:center; color: #1e293b;"><p><strong>Total de Votantes {{ padron }}</strong></p></h1>
+                    
+                    <!-- PANEL BOCA DE URNA (HERO METRIC) -->
+                    <div class="row" style="margin-bottom: 30px;">
+                        <div class="col-md-12">
+                            <div class="card" style="background-color: #1e293b; border-radius: 10px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);">
+                                <div class="card-body" style="padding: 45px 20px; text-align: center; color: white;">
+                                    <h3 style="margin-top: 0; color: #f8fafc; font-weight: 600; letter-spacing: 0.5px;">PROYECCIÓN BOCA DE URNA</h3>
+                                    <p style="font-size: 15px; color: #94a3b8;">Porcentaje de los votantes actuales que fueron procesados en el búnker</p>
+                                    
+                                    <h1 style="font-size: 78px; font-weight: 800; margin: 20px 0; color: #10b981; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                                        {{ proyeccion_votos }}%
+                                    </h1>
+                                    
+                                    <div class="progress" style="height: 28px; background-color: #334155; border-radius: 8px; width: 75%; margin: 0 auto; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);">
+                                        <div class="progress-bar progress-bar-striped active" 
+                                            role="progressbar" 
+                                            :style="{ width: proyeccion_votos + '%', backgroundColor: '#10b981' }">
+                                        </div>
+                                    </div>
+                                    
+                                    <p style="margin-top: 25px; font-size: 16px; color: #e2e8f0;">
+                                        <strong style="color: #3b82f6; font-size: 18px;">{{ punteo }}</strong> Punteados confirmados sobre 
+                                        <strong style="color: #3b82f6; font-size: 18px;">{{ conteo }}</strong> Votantes escrutados
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FIN PANEL BOCA DE URNA -->
+
                     <div class="row">
+                        <!-- PANEL: PUNTEO -->
                         <div class="col-md-6">
-                            <div class="card card-chart">
-                                <div class="card-header">
-                                    <div class="form-group row">
-                                        <h4>Punteo</h4>&nbsp;&nbsp;
-                                        <button type="button" @click="impresion()" class="btn btn-primary">
-                                            <i class="cib-adobe-acrobat-reader"></i> Detalle
-                                        </button>
+                            <div class="card card-chart" style="border: 1px solid #e2e8f0; border-radius: 8px;">
+                                <div class="card-header" style="background-color: #ffffff; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-radius: 8px 8px 0 0;">
+                                    <h4 style="margin: 0; color: #334155; font-weight: 600;">Punteo</h4>
+                                    <button type="button" @click="impresion()" class="btn btn-default" style="padding: 6px 14px; font-weight: 600; font-size: 13px; color: #475569; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                        <i class="cib-adobe-acrobat-reader" style="margin-right: 6px; color: #e11d48;"></i> Exportar Detalle
+                                    </button>
+                                </div>
+                                <div class="card-content" style="padding: 25px 20px;">
+                                    <div style="margin-bottom: 20px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #475569; font-size: 14px;">
+                                            <strong>No Punteados</strong>
+                                            <span style="font-weight: 600;">{{ padron - punteo }} ({{ punteo_no }}%)</span>
+                                        </div>
+                                        <div class="progress" style="height: 16px; background-color: #f1f5f9; border-radius: 8px; box-shadow: none;">
+                                            <div class="progress-bar" role="progressbar" :style="{ width: punteo_no + '%', backgroundColor: '#d97706' }"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #0f172a; font-size: 14px;">
+                                            <strong>Punteados</strong>
+                                            <span style="font-weight: 600;">{{ punteo }} ({{ punteo_si }}%)</span>
+                                        </div>
+                                        <div class="progress" style="height: 16px; background-color: #f1f5f9; border-radius: 8px; box-shadow: none;">
+                                            <div class="progress-bar" role="progressbar" :style="{ width: punteo_si + '%', backgroundColor: '#059669' }"></div>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="card-content">
-                                    <div class="ct-chart">
-                                        <canvas id="punteo">
-                                        </canvas>
+                        <!-- PANEL: COMIDA -->
+                        <div class="col-md-6">
+                            <div class="card card-chart" style="border: 1px solid #e2e8f0; border-radius: 8px;">
+                                <div class="card-header" style="background-color: #ffffff; border-bottom: 1px solid #f1f5f9; padding: 15px 20px; border-radius: 8px 8px 0 0;">
+                                    <h4 style="margin: 0; color: #334155; font-weight: 600; line-height: 32px;">Comida</h4>
+                                </div>
+                                <div class="card-content" style="padding: 25px 20px;">
+                                    <div style="margin-bottom: 20px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #475569; font-size: 14px;">
+                                            <strong>No Registrados</strong>
+                                            <span style="font-weight: 600;">{{ padron - comida }} ({{ comida_no }}%)</span>
+                                        </div>
+                                        <div class="progress" style="height: 16px; background-color: #f1f5f9; border-radius: 8px; box-shadow: none;">
+                                            <div class="progress-bar" role="progressbar" :style="{ width: comida_no + '%', backgroundColor: '#d97706' }"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #0f172a; font-size: 14px;">
+                                            <strong>Registrados</strong>
+                                            <span style="font-weight: 600;">{{ comida }} ({{ comida_si }}%)</span>
+                                        </div>
+                                        <div class="progress" style="height: 16px; background-color: #f1f5f9; border-radius: 8px; box-shadow: none;">
+                                            <div class="progress-bar" role="progressbar" :style="{ width: comida_si + '%', backgroundColor: '#059669' }"></div>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="card-footer">
-                                    <p><strong></strong></p>
+                        <!-- PANEL: CONTEO -->
+                        <div class="col-md-6">
+                            <div class="card card-chart" style="border: 1px solid #e2e8f0; border-radius: 8px;">
+                                <div class="card-header" style="background-color: #ffffff; border-bottom: 1px solid #f1f5f9; padding: 15px 20px; border-radius: 8px 8px 0 0;">
+                                    <h4 style="margin: 0; color: #334155; font-weight: 600; line-height: 32px;">Conteo Mesa</h4>
+                                </div>
+                                <div class="card-content" style="padding: 25px 20px;">
+                                    <div style="margin-bottom: 20px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #475569; font-size: 14px;">
+                                            <strong>Faltantes</strong>
+                                            <span style="font-weight: 600;">{{ padron - conteo }} ({{ conteo_no }}%)</span>
+                                        </div>
+                                        <div class="progress" style="height: 16px; background-color: #f1f5f9; border-radius: 8px; box-shadow: none;">
+                                            <div class="progress-bar" role="progressbar" :style="{ width: conteo_no + '%', backgroundColor: '#d97706' }"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #0f172a; font-size: 14px;">
+                                            <strong>Votantes</strong>
+                                            <span style="font-weight: 600;">{{ conteo }} ({{ conteo_si }}%)</span>
+                                        </div>
+                                        <div class="progress" style="height: 16px; background-color: #f1f5f9; border-radius: 8px; box-shadow: none;">
+                                            <div class="progress-bar" role="progressbar" :style="{ width: conteo_si + '%', backgroundColor: '#059669' }"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- PANEL: CONTEO SEGURO -->
                         <div class="col-md-6">
-                            <div class="card card-chart">
-                                <div class="card-header">
-                                    <h4>Comida</h4>
+                            <div class="card card-chart" style="border: 1px solid #e2e8f0; border-radius: 8px;">
+                                <div class="card-header" style="background-color: #ffffff; border-bottom: 1px solid #f1f5f9; padding: 15px 20px; border-radius: 8px 8px 0 0;">
+                                    <h4 style="margin: 0; color: #334155; font-weight: 600; line-height: 32px;">Conteo Seguro</h4>
                                 </div>
-                                <div class="card-content">
-                                    <div class="ct-chart">
-                                        <canvas id="comida">
-                                        </canvas>
+                                <div class="card-content" style="padding: 25px 20px;">
+                                    <div style="margin-bottom: 20px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #475569; font-size: 14px;">
+                                            <strong>Faltantes</strong>
+                                            <span style="font-weight: 600;">{{ padron - conteo_seguro }} ({{ conteo_seguro_no }}%)</span>
+                                        </div>
+                                        <div class="progress" style="height: 16px; background-color: #f1f5f9; border-radius: 8px; box-shadow: none;">
+                                            <div class="progress-bar" role="progressbar" :style="{ width: conteo_seguro_no + '%', backgroundColor: '#d97706' }"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="card-footer">
-                                    <p><strong></strong></p>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #0f172a; font-size: 14px;">
+                                            <strong>Votantes</strong>
+                                            <span style="font-weight: 600;">{{ conteo_seguro }} ({{ conteo_seguro_si }}%)</span>
+                                        </div>
+                                        <div class="progress" style="height: 16px; background-color: #f1f5f9; border-radius: 8px; box-shadow: none;">
+                                            <div class="progress-bar" role="progressbar" :style="{ width: conteo_seguro_si + '%', backgroundColor: '#059669' }"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- PANEL: COMBUSTIBLE -->
                         <div class="col-md-6">
-                            <div class="card card-chart">
-                                <div class="card-header">
-                                    <h4>Conteo</h4>
+                            <div class="card card-chart" style="border: 1px solid #e2e8f0; border-radius: 8px;">
+                                <div class="card-header" style="background-color: #ffffff; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-radius: 8px 8px 0 0;">
+                                    <h4 style="margin: 0; color: #334155; font-weight: 600;">Combustible</h4>
+                                    <button type="button" @click="impresionCombustible()" class="btn btn-default" style="padding: 6px 14px; font-weight: 600; font-size: 13px; color: #475569; background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                                        <i class="cib-adobe-acrobat-reader" style="margin-right: 6px; color: #e11d48;"></i> Exportar Detalle
+                                    </button>
                                 </div>
-                                <div class="card-content">
-                                    <div class="ct-chart">
-                                        <canvas id="conteo">
-                                        </canvas>
+                                <div class="card-content" style="padding: 25px 20px;">
+                                    <div style="margin-bottom: 20px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;">
+                                            <strong style="color: #475569;">Vales Pendientes</strong>
+                                            <span style="font-weight: 600; color: #d97706;">{{ combustible_pendiente }} Lts ({{ combustible_pendiente_porcentaje }}%)</span>
+                                        </div>
+                                        <div class="progress" style="height: 16px; background-color: #f1f5f9; border-radius: 8px; box-shadow: none;">
+                                            <div class="progress-bar" role="progressbar" :style="{ width: combustible_pendiente_porcentaje + '%', backgroundColor: '#f59e0b' }"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="card-footer">
-                                    <p><strong></strong></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card card-chart">
-                                <div class="card-header">
-                                    <h4>Conteo Seguro</h4>
-                                </div>
-                                <div class="card-content">
-                                    <div class="ct-chart">
-                                        <canvas id="conteo_seguro">
-                                        </canvas>
+                                    
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;">
+                                            <strong style="color: #0f172a;">Combustible Entregado</strong>
+                                            <span style="font-weight: 600; color: #059669;">{{ combustible_cargado }} Lts ({{ combustible_cargado_porcentaje }}%)</span>
+                                        </div>
+                                        <div class="progress" style="height: 16px; background-color: #f1f5f9; border-radius: 8px; box-shadow: none;">
+                                            <div class="progress-bar" role="progressbar" :style="{ width: combustible_cargado_porcentaje + '%', backgroundColor: '#10b981' }"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="card-footer">
-                                    <p><strong></strong></p>
                                 </div>
                             </div>
                         </div>
@@ -89,6 +198,7 @@
         </div>
     </main>
 </template>
+
 <script>
     export default {
         props : ['ruta'],
@@ -112,17 +222,13 @@
                 conteo_seguro_si : 0,
                 conteo_seguro_no : 0,
 
-                charPunteo : null,
-                varPunteo : null,
+                proyeccion_votos: 0,
 
-                charComida : null,
-                varComida : null,
-
-                charConteo : null,
-                varConteo : null,
-
-                charConteo_Seguro : null,
-                varConteo_Seguro : null
+                combustible_total: 0,
+                combustible_cargado: 0,
+                combustible_pendiente: 0,
+                combustible_cargado_porcentaje: 0,
+                combustible_pendiente_porcentaje: 0,
             }
         },
         methods : {
@@ -130,191 +236,74 @@
                 let me=this;
                 
                 this.padron = 0;
-
                 this.punteo = 0;
                 this.punteo_si = 0;
                 this.punteo_no = 0;
-
                 this.comida = 0;
                 this.comida_si = 0;
                 this.comida_no = 0;
-
                 this.conteo = 0;
-                this.conteo_si = 0,
-                this.conteo_no = 0,
-
+                this.conteo_si = 0;
+                this.conteo_no = 0;
                 this.conteo_seguro = 0;
-                this.conteo_seguro_si = 0,
-                this.conteo_seguro_no = 0,
+                this.conteo_seguro_si = 0;
+                this.conteo_seguro_no = 0;
+                this.proyeccion_votos = 0;
+                this.combustible_total = 0;
+                this.combustible_cargado = 0;
+                this.combustible_pendiente = 0;
+                this.combustible_cargado_porcentaje = 0;
+                this.combustible_pendiente_porcentaje = 0;
 
-                this.charPunteo = null;
-                this.varPunteo = null;
-
-                this.charComida = null;
-                this.varComida = null;
-
-                this.charConteo = null;
-                this.varConteo = null;
-
-                this.charConteo_Seguro = null;
-                this.varConteo_Seguro = null;
-
-                var url= this.ruta + '/graficos/general';
+                var url = this.ruta + '/graficos/general';
                 axios.get(url).then(function (response) {
+                    me.padron = parseInt(response.data.padron, 10);
+                    me.punteo = parseInt(response.data.punteo, 10);
+                    me.comida = parseInt(response.data.comida, 10);
+                    me.conteo = parseInt(response.data.conteo, 10);
+                    me.conteo_seguro = parseInt(response.data.conteo_seguro, 10);
 
-                    // PADRON
-                    if (!response.data.padron[0]['padron']) {
-                        me.padron = 0;
-                    } else {
-                        me.padron = parseFloat(response.data.padron[0]['padron']);
-                    }
+                    if (me.padron > 0) {
+                        me.punteo_si = parseFloat((me.punteo * 100 / me.padron).toFixed(2));
+                        me.punteo_no = parseFloat(((me.padron - me.punteo) * 100 / me.padron).toFixed(2));
+                        
+                        me.comida_si = parseFloat((me.comida * 100 / me.padron).toFixed(2));
+                        me.comida_no = parseFloat(((me.padron - me.comida) * 100 / me.padron).toFixed(2));
+                        
+                        me.conteo_si = parseFloat((me.conteo * 100 / me.padron).toFixed(2));
+                        me.conteo_no = parseFloat(((me.padron - me.conteo) * 100 / me.padron).toFixed(2));
+                        
+                        me.conteo_seguro_si = parseFloat((me.conteo_seguro * 100 / me.padron).toFixed(2));
+                        me.conteo_seguro_no = parseFloat(((me.padron - me.conteo_seguro) * 100 / me.padron).toFixed(2));
+                    } 
                     
-                    // PUNTEO
-                    if (!response.data.punteo[0]['punteo']) {
-                        me.punteo = 0;
-                    } else {
-                        me.punteo = parseFloat(response.data.punteo[0]['punteo']);
+                    if (me.conteo > 0) {
+                        me.proyeccion_votos = parseFloat(((me.punteo / me.conteo) * 100).toFixed(2));
                     }
-                    me.punteo_si = parseFloat((me.punteo * 100 / me.padron)).toFixed(2);
-                    me.punteo_no = parseFloat(((me.padron - me.punteo) * 100 / me.padron)).toFixed(2);
-                    
 
-                    // COMIDA
-                    if (!response.data.comida[0]['comida']) {
-                        me.comida = 0;
+                    me.combustible_total = parseFloat(response.data.combustible_total) || 0;
+                    me.combustible_cargado = parseFloat(response.data.combustible_cargado) || 0;
+
+                    if (me.combustible_total > 0) {
+                        me.combustible_pendiente = me.combustible_total - me.combustible_cargado;
+                        
+                        me.combustible_cargado_porcentaje = parseFloat(((me.combustible_cargado * 100) / me.combustible_total).toFixed(2));
+                        me.combustible_pendiente_porcentaje = parseFloat(((me.combustible_pendiente * 100) / me.combustible_total).toFixed(2));
                     } else {
-                        me.comida = parseFloat(response.data.comida[0]['comida']);
+                        me.combustible_pendiente = 0;
+                        me.combustible_cargado_porcentaje = 0;
+                        me.combustible_pendiente_porcentaje = 0;
                     }
-                    me.comida_si = parseFloat((me.comida * 100 / me.padron)).toFixed(2);
-                    me.comida_no = parseFloat(((me.padron - me.comida) * 100 / me.padron)).toFixed(2);
-
-                    // CONTEO
-                    if (!response.data.conteo[0]['conteo'])  {
-                        me.conteo = 0;
-                    } else {
-                        me.conteo = parseFloat(response.data.conteo[0]['conteo']);
-                    }
-                    me.conteo_si = parseFloat((me.conteo * 100 / me.padron)).toFixed(2);
-                    me.conteo_no = parseFloat(((me.padron - me.conteo) * 100 / me.padron)).toFixed(2);
-
-
-                    // CONTEO SEGURO
-                    if (!response.data.conteo_seguro[0]['conteo_seguro'])  {
-                        me.conteo_seguro = 0;
-                    } else {
-                        me.conteo_seguro = parseFloat(response.data.conteo_seguro[0]['conteo_seguro']);
-                    }
-                    me.conteo_seguro_si = parseFloat((me.conteo_seguro * 100 / me.padron)).toFixed(2);
-                    me.conteo_seguro_no = parseFloat(((me.padron - me.conteo_seguro) * 100 / me.padron)).toFixed(2);
-
-                    //cargamos los datos del chart
-                    me.load();
                 })
                 .catch(function (error) {
-                    console.log(error);
-                });
-            },
-            load(){
-                let me=this;
-                
-                // Punteo
-                me.varPunteo = document.getElementById('punteo').getContext('2d');
-                me.charPunteo = new Chart(me.varPunteo, {
-                    type: 'pie',
-                    data: {
-                        labels: [
-                            'Puntedos: '+me.punteo,
-                            'No Punteados: '+(me.padron - me.punteo)
-                        ],
-                        datasets: [{
-                            label: 'Punteo',
-                            data: [
-                                me.punteo_si,
-                                me.punteo_no],
-                            backgroundColor: ['#36A2EB', '#FF6384'],
-                            overBackgroundColor: ['#36A2EB', '#FF6384'],
-                            borderWidth: 1
-                        }],
-                    },
-                    options: {
-                        responsive: true
-                    }
-                });
-
-                // Comida
-                me.varComida = document.getElementById('comida').getContext('2d');
-                me.charComida = new Chart(me.varComida, {
-                    type: 'pie',
-                    data: {
-                        labels: [
-                            'Registrados: '+me.comida,
-                            'No Registrados: '+(me.padron - me.comida)
-                        ],
-                        datasets: [{
-                            label: 'Comida',
-                            data: [
-                                me.comida_si,
-                                me.comida_no],
-                            backgroundColor: ['#FFCE56', '#FF6384'],
-                            overBackgroundColor: ['#FFCE56', '#FF6384'],
-                            borderWidth: 1
-                        }],
-                    },
-                    options: {
-                        responsive: true
-                    }
-                });
-
-                // Conteo
-                me.varConteo = document.getElementById('conteo').getContext('2d');
-                me.charConteo = new Chart(me.varConteo, {
-                    type: 'pie',
-                    data: {
-                        labels: [
-                            'Votentes: '+me.conteo,
-                            'Faltantes: '+(me.padron - me.conteo)
-                        ],
-                        datasets: [{
-                            label: 'Conteo',
-                            data: [
-                                me.conteo_si,
-                                me.conteo_no],
-                            backgroundColor: ['#4BC0C0', '#FF6384'],
-                            overBackgroundColor: ['#4BC0C0', '#FF6384'],
-                            borderWidth: 1
-                        }],
-                    },
-                    options: {
-                        responsive: true
-                    }
-                });
-
-                // Conteo Seguro
-                me.varConteo_Seguro = document.getElementById('conteo_seguro').getContext('2d');
-                me.charConteo_Seguro = new Chart(me.varConteo_Seguro, {
-                    type: 'pie',
-                    data: {
-                        labels: [
-                            'Votentes: '+me.conteo_seguro,
-                            'Faltantes: '+(me.padron - me.conteo_seguro)
-                        ],
-                        datasets: [{
-                            label: 'Conteo Seguro',
-                            data: [
-                                me.conteo_seguro_si,
-                                me.conteo_seguro_no],
-                            backgroundColor: ['#fd963f', '#FF6384'],
-                            overBackgroundColor: ['#fd963f', '#FF6384'],
-                            borderWidth: 1
-                        }],
-                    },
-                    options: {
-                        responsive: true
-                    }
+                    console.error("Error al obtener los datos:", error);
                 });
             },
             impresion(){
                 window.open(this.ruta + '/punteo/listado', '_blank');
+            },
+            impresionCombustible() {
+                window.open(this.ruta + '/combustible_carga/listado', '_blank');
             }
         },
         mounted() {

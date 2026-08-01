@@ -111,11 +111,11 @@
                         <button type="button" class="btn btn-danger btn-lg shadow-sm" @click="cerrarModal()">
                             <i class="cil-x"></i> Cerrar
                         </button>
-                        <button type="button" v-if="tipoAccion == 1" class="btn btn-success btn-lg shadow-sm px-5 font-weight-bold" @click="store()" :disabled="nombre == ''">
-                            <i class="cil-check-alt"></i> Guardar
-                        </button>
                         <button type="button" v-if="tipoAccion == 2" class="btn btn-success btn-lg shadow-sm px-5 font-weight-bold" @click="update()" :disabled="nombre == ''">
                             <i class="cil-check-alt"></i> Actualizar
+                        </button>
+                        <button type="button" v-if="tipoAccion == 1" class="btn btn-success btn-lg shadow-sm px-5 font-weight-bold" @click="store()" :disabled="nombre == ''">
+                            <i class="cil-check-alt"></i> Guardar
                         </button>
                     </div>
                 </div>

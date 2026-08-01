@@ -5,6 +5,8 @@ use sgt\Models\PadronModel;
 use sgt\Models\PunteoModel;
 use sgt\Models\ComidaModel;
 use sgt\Models\ConteoModel;
+use sgt\Models\CombustibleModel;
+use sgt\Models\Combustible_CargaModel;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
@@ -12,12 +14,20 @@ use Illuminate\Http\Request;
 class GraficosController extends Controller
 {
     public function graficos(Request $request){
-        $padron = PadronModel::selectRaw("count(*) as padron")->get();
-        $punteo = PunteoModel::selectRaw("count(*) as punteo")->get();
-        $comida = ComidaModel::selectRaw("count(*) as comida")->get();
-        $conteo = ConteoModel::selectRaw("sum(conteo) as conteo")->get();
-        $conteo_seguro = ConteoModel::selectRaw("sum(conteo_seguro) as conteo_seguro")->get();
+        $padron = PadronModel::count();
+        $punteo = PunteoModel::count();
+        $comida = ComidaModel::count();
+        $conteo = ConteoModel::sum('conteo') ?? 0;
+        $conteo_seguro = ConteoModel::sum('conteo_seguro') ?? 0;
+        $combustible_total =CombustibleModel::sum('litros');
+        $combustible_cargado = Combustible_CargaModel::sum('litros');
 
-        return ['padron'=>$padron, 'punteo'=>$punteo, 'comida'=>$comida, 'conteo'=>$conteo, 'conteo_seguro'=>$conteo_seguro];
+        return response()->json(['padron'=>$padron, 
+                                'punteo'=>$punteo, 
+                                'comida'=>$comida, 
+                                'conteo'=>$conteo, 
+                                'conteo_seguro'=>$conteo_seguro, 
+                                'combustible_total' => $combustible_total,
+                                'combustible_cargado' => $combustible_cargado], 200);
     }
 }

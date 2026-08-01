@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Reporte de Punteo</title>
+    <title>Reporte de Combustible</title>
     <style>
         @page { 
             size: A4 landscape;
@@ -63,7 +63,8 @@
         }
         
         .text-center { text-align: center; }
-        .spacer-col { background-color: #ffffff !important; border: none !important; width: 4%; }
+        .text-right { text-align: right; }
+        .spacer-col { background-color: #ffffff !important; border: none !important; width: 2%; }
         
         .footer-total { 
             width: 100%; 
@@ -74,11 +75,12 @@
         }
         .izquierda { float: left; font-weight: bold; color: #1e3a5f; }
         .derecha { float: right; color: #6b7280; font-size: 8.5px; }
+        .alert-text { color: #e74c3c; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="header-report">
-        <h2>LISTADO DE PUNTEO RESUMIDO</h2>
+        <h2>LISTADO CONTROL DE COMBUSTIBLE</h2>
         <div class="subtitle">PRONET SI</div>
         <div class="date">Hasta Fecha: {{ date('d/m/Y') }}</div>
     </div>
@@ -86,35 +88,60 @@
     <table>
         <thead>
             <tr>
-                <th width="25%">VOTANTE</th>
-                <th width="10%">DNI</th>
-                <th width="13%" class="text-center">FECHA / HORA</th>
+                <th width="24%">NOMBRE</th>
+                <th width="8%" class="text-right">AUTORIZADO</th>
+                <th width="8%" class="text-right">CARGADO</th>
+                <th width="9%" class="text-center">HORA</th>
+                
                 <th class="spacer-col"></th>
-                <th width="25%">VOTANTE</th>
-                <th width="10%">DNI</th>
-                <th width="13%" class="text-center">FECHA / HORA</th>
+                
+                <th width="24%">NOMBRE</th>
+                <th width="8%" class="text-right">AUTORIZADO</th>
+                <th width="8%" class="text-right">CARGADO</th>
+                <th width="9%" class="text-center">HORA</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($punteo->chunk(2) as $chunk)
+            @foreach ($combustible->chunk(2) as $chunk)
             <tr>
                 @php 
                     $first = $chunk->first(); 
                     $last = $chunk->last(); 
                 @endphp
                 
-                <td>{{ \Illuminate\Support\Str::limit($first->nombre, 30) }}</td>
-                <td>{{ $first->dni }}</td>
-                <td class="text-center">{{ \Carbon\Carbon::parse($first->created_at)->format('d/m/Y H:i') }}</td>
+                <!-- COLUMNA IZQUIERDA -->
+                <td>{{ \Illuminate\Support\Str::limit($first->nombre, 25) }}</td>
+                <td class="text-right">{{ number_format($first->autorizado, 2, ',', '.') }} L</td>
+                <td class="text-right">
+                    @if($first->cargado)
+                        <span class="{{ $first->cargado > $first->autorizado ? 'alert-text' : '' }}">
+                            {{ number_format($first->cargado, 2, ',', '.') }} L
+                        </span>
+                    @else
+                        -
+                    @endif
+                </td>
+                <td class="text-center">{{ $first->fecha_carga ? \Carbon\Carbon::parse($first->fecha_carga)->format('d/m H:i') : '-' }}</td>
                 
+                <!-- ESPACIADOR -->
                 <td class="spacer-col"></td>
                 
+                <!-- COLUMNA DERECHA -->
                 @if($chunk->count() == 2)
-                    <td>{{ \Illuminate\Support\Str::limit($last->nombre, 30) }}</td>
-                    <td>{{ $last->dni }}</td>
-                    <td class="text-center">{{ \Carbon\Carbon::parse($last->created_at)->format('d/m/Y H:i') }}</td>
+                    <td>{{ \Illuminate\Support\Str::limit($last->nombre, 25) }}</td>
+                    <td class="text-right">{{ number_format($last->autorizado, 2, ',', '.') }} L</td>
+                    <td class="text-right">
+                        @if($last->cargado)
+                            <span class="{{ $last->cargado > $last->autorizado ? 'alert-text' : '' }}">
+                                {{ number_format($last->cargado, 2, ',', '.') }} L
+                            </span>
+                        @else
+                            -
+                        @endif
+                    </td>
+                    <td class="text-center">{{ $last->fecha_carga ? \Carbon\Carbon::parse($last->fecha_carga)->format('d/m H:i') : '-' }}</td>
                 @else
-                    <td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td>
                 @endif
             </tr>
             @endforeach
@@ -123,7 +150,8 @@
 
     <div class="footer-total">
         <div class="izquierda">
-            Total Punteados: {{ $contador }}
+            Total Autorizado: {{ number_format($total_autorizado, 2, ',', '.') }} L &nbsp;&nbsp;|&nbsp;&nbsp; 
+            Total Entregado: {{ number_format($total_cargado, 2, ',', '.') }} L
         </div>
         <div class="derecha">
             Emisión: {{ date('d/m/Y H:i') }}
